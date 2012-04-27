@@ -1,21 +1,57 @@
 // Socket.IO OAuth example with Tumblr
 
-var sioa = require('../socketioauth')({
-  'host':    null,
-  'port':    8080,
-  'secret':  'XXXX',
+var Sioa   = require('../index'),
+    config = require('./config');
 
-  'protocol':        'http://',
-  'domain':          'DOMAINNAME.COM:PORT',
-  'requestUrl':      'http://www.tumblr.com/oauth/request_token',
-  'accessUrl':       'http://www.tumblr.com/oauth/access_token',
-  'authorizeUrl':    'http://www.tumblr.com/oauth/authorize',
-  'authenticateUrl': 'http://api.tumblr.com/v2/user/info',
-
-  'consumerKey':     'XXXX',
-  'consumerSecret':  'XXXX',
-  'callbackUrl':     '/callback',
-
-  'websitePath': '/public',
-  'appHtmlPath': '/index.html',
+var YourApp = Sioa.extend({
+    userList: null,
+    config: null,
+    
+    init: function(config) {
+        // Perform your initializations for extended app
+        this.config = config;
+        
+        // Call parent
+        this._super(this.config);
+          
+        this.userList = {};
+    },
+    
+    onConnect: function(socket)
+    {
+        this._super(socket);
+        
+        // Additional app setup
+        var session  = this.getSession(socket);
+        
+        this.userList[socket.id] = session;
+        
+        this.messageClient(socket, 'welcome', {
+            sid: socket.id,
+            message: 'Hello, new user!'
+        });
+        
+        
+    },
+    
+    onDisconnect: function()
+    {
+        // We are currently in the scope of the socket
+        
+        this.app._super();
+    },
+    
+    onMessage: function(request)
+    {
+        // We are currently in the scope of the socket
+        
+        this.app._super(request);
+        
+        this.messageAll('forward', {
+            sid: this.id,
+            message: request.message
+        });
+    }
 });
+
+new YourApp(config);
