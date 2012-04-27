@@ -12,7 +12,12 @@ var YourApp = Sioa.extend({
         this.config = config;
         
         // Call parent
-        this._super(this.config);
+        this._super(this.config, function(req) {    
+            // If you want, a callback handled during page load to pull page data
+            // We provide req.page to grab a handy url name
+            
+            console.log(req.params.page || '');            
+        });
           
         this.userList = {};
     },
@@ -38,16 +43,16 @@ var YourApp = Sioa.extend({
     {
         // We are currently in the scope of the socket
         
-        this.app._super();
+        this._super();
     },
     
     onMessage: function(request)
     {
         // We are currently in the scope of the socket
         
-        this.app._super(request);
+        this._super(request);
         
-        this.messageAll('forward', {
+        this.app.messageAll('forward', {
             sid: this.id,
             message: request.message
         });

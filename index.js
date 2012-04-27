@@ -15,7 +15,7 @@ var Sioa = {
     iosockets: null,
     db:        null,
 
-    init: function(config) {
+    init: function(config, redirectCallback) {
         console.log('Starting SocketIOAuth');
 
         if (config.db) {
@@ -55,7 +55,7 @@ var Sioa = {
                     console.log('setting up oauth');
 
                     // Attach server requests for OAuth automation
-                    OauthReq(this.server, config.oauth);
+                    OauthReq(this.server, config.oauth, redirectCallback);
                 }
 
                 this.server.listen(config.server.port || process.env.PORT, config.server.host || '0.0.0.0');
