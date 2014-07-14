@@ -13,12 +13,12 @@
     "url": "git://github.com/DRDIO/socketioauth.git"
   },
   "dependencies": {
-    "express": ">= 2.5.8",
-    "bison": ">= 1.1.1",
-    "oauth": ">= 0.9.6",
-    "socket.io": ">= 0.9.3",
-    "mongojs": ">= 0.3.2",
-    "connect": ">= 1.8.7"
+    "express": " 2.5.9",
+    "bison": "1.1.1",
+    "oauth": "0.9.7",
+    "socket.io": "0.9.6",
+    "mongojs": "0.4.2",
+    "connect": "2.2.2",
   },
   "devDependencies": {},
   "optionalDependencies": {},
